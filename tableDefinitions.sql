@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `location`;
-DROP TABLE IF EXISTS `tag`;
+DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `tag_restaraunt`;
+DROP TABLE IF EXISTS `tag`;
 DROP TABLE IF EXISTS `restaraunt`;
 
 CREATE TABLE location
@@ -10,7 +10,6 @@ CREATE TABLE location
   streetAddress VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   state VARCHAR(255) NOT NULL,
-  city VARCHAR(255) NOT NULL,
   zip INT,
   PRIMARY KEY(id)
 );
