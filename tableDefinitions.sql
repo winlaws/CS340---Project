@@ -1,8 +1,9 @@
-DROP TABLE IF EXISTS `location`;
-DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `tag_restaraunt`;
-DROP TABLE IF EXISTS `tag`;
+DROP TABLE IF EXISTS `user`;
 DROP TABLE IF EXISTS `restaraunt`;
+DROP TABLE IF EXISTS `tag`;
+DROP TABLE IF EXISTS `location`;
+
 
 CREATE TABLE location
 (
