@@ -22,7 +22,7 @@
           echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
         $date = date("Y-m-d H:i:s");
-        if(!($stmt->bind_param("iiiss",$_POST['uid'],$_POST['rid'],$_POST['rating'],$_POST['reviewtxt'],$date))){
+        if(!($stmt->bind_param("iiiss",$_POST['uid'],$_POST['rid'],$_POST['rating'],$_POST['txt'],$date))){
           echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
         }
         if(!$stmt->execute()){
