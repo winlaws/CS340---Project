@@ -40,7 +40,7 @@ CREATE TABLE restaraunt
   phone VARCHAR(255) NOT NULL,
   lid INT NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY(lid) REFERENCES location(id), 
+  FOREIGN KEY(lid) REFERENCES location(id)
 );
 
 CREATE TABLE tag_restaraunt
