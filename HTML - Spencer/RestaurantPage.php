@@ -13,10 +13,47 @@
 <html lang="en">
 	<head>
     	<title>Restaurant Page</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   	</head> 
   	<body>
-    	<!-- Restaurant Info - get using php (sql query)-->
     	<?php
+            // New Review Added 
+            if(!empty($_POST))
+            {
+                if(!($stmt = $mysqli->prepare("INSERT INTO review(uid, rid, rating, reviewtxt, reviewDate) VALUES (?,?,?,?,?)"))){
+                    echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                }
+                $date = date("Y-m-d H:i:s");
+                if(!($stmt->bind_param("iiiss",$_POST['uid'],$_POST['rid'],$_POST['rating'],$_POST['txt'],$date))){
+                    echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+                }
+                if(!$stmt->execute()){
+                    echo '<div class="alert alert-danger alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        Execute failed:' .  $stmt->errno . " " . $stmt->error . '
+                    </div>';
+                } 
+                else {
+                    echo '<div class="alert alert-success alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        New Review Added
+                    </div>';
+                }                
+            }
+            
+            // Restaurant Info - get using php (sql query)
             if(!($stmt = $mysqli->prepare("SELECT restaurant.name, restaurant.website, restaurant.phone, 
                                                   location.streetAddress, location.city, location.state, location.zip 
                                             FROM restaurant
@@ -34,27 +71,21 @@
             if(!$stmt->bind_result($name, $website, $phone, $streetAddress, $city, $state, $zip)){
                 echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
             }
+
+            echo '<div class="col-lg-8 col-lg-offset-2">';
+            
             while($stmt->fetch()){
-                echo '<div>
-                        <div>'
-                            . $name .
-                        '</div>
-                        <div>
-                            Website: <a href="' . $website . '">' . $website . '</a>
-                        </div>
-                        <div>
-                            Phone: ' . $phone .
-                        '</div>  
-                        <div>'
-                            . $streetAddress . '<br/>'
-                            . $city . ', ' . $state . ' ' . $zip .
-                        '</div>
-                    </div>';
+                echo '<div class="text-center">
+                        <h1>' . $name . '</h1>
+                        Website: <a href="' . $website . '">' . $website . '</a> <br/>
+                        Phone: ' . $phone . '<br/>'
+                        . $streetAddress . '<br/>'
+                        . $city . ', ' . $state . ' ' . $zip .
+                    '</div>';
             }
             $stmt->close();
         ?>
-
-        
+    
     	<!-- Back to List -->
     	<!-- <br/>
     	<a href="./RestaurantList.php?city=Miami">Back to Restaurant List</a>
@@ -62,18 +93,19 @@
     	
         <!-- Review Section -->
 		<br/>
-    	
         <?php
-            echo '<div>
-                    <!-- Add New Review -->
-                    Reviews - <a href="./WriteNewReview.php?rid=' . $_GET['rid'] . '">Write New Review</a> <br/>';
+            echo '<!-- Add New Review -->
+                <h3>Reviews</h3> 
+                <div>
+                    <a href="./WriteNewReview.php?rid=' . $_GET['rid'] . '">Write New Review</a> <br/>
+                </div>';
 
             // Get reviews using query
             if(!($stmt = $mysqli->prepare("SELECT review.rating, user.username, review.reviewDate, review.reviewtxt 
                                             FROM review
                                             INNER JOIN user ON review.uid = user.id 
                                             WHERE review.rid=(?)
-                                            ORDER BY review.reviewDate")))
+                                            ORDER BY review.reviewDate DESC")))
             {
                 echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
             }
@@ -88,16 +120,19 @@
             }
             while($stmt->fetch()){
                 echo '<br/> 
-                    <div>'
-                        . $rating . '/5 - ' . $username . ' - ' . $date .
-                    '</div>
-                    <div>'
-                        . $txt .
-                    '</div>';
+                    <div class="well">
+                        <div>
+                            <h4>' . $rating . '/5 - ' . $username . ' - ' . $date . '</h4>
+                        </div>
+                        <div>'
+                            . $txt .
+                        '</div>
+                    </div>';
             }
             $stmt->close();
 
             echo '</div>';
         ?>
+        </div>
   	</body>
 </html>
