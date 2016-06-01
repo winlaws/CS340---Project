@@ -1,0 +1,125 @@
+﻿        .login_container
+        {
+            border-radius: 5px;
+            background-color: green;
+            padding: 20px 50px 20px 50px;
+            margin: 50px auto 0 auto;
+            width: 500px;
+        }
+
+        caption {
+            color: white;
+        }
+
+        .login_container a {
+            color: #313880;
+        }
+
+        .login h3 {
+            color: white;
+        }
+
+        .login label {
+            clear: both;
+            color: white;
+        
+        }
+
+        .subform select[multiple] {
+            width: 350px;
+            clear: both;
+            margin: 0px auto 10px auto;
+            height: 250px;
+        }
+
+        .login input[type="text"]
+        {
+            width: 350px;
+            clear: both;
+            margin: 0px auto 10px auto;
+        }
+
+        .login input[type="password"]
+        {
+            width: 350px;
+            clear: both;
+            margin: 0px auto 10px auto;
+        }
+
+        .subform 
+        {
+            width: 400px;
+            clear: both;
+            padding: 20px;
+            margin: 10px auto 10px auto;
+            background-color:  #333333;
+            border-radius: 5px;
+        }
+        .subform label
+        {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .subform input[type="text"], select, input[type="tel"], input[type="url"]
+        {
+            width: 300px;
+            clear: both;
+            display: block;
+            margin: 0 auto;
+        }
+
+
+        .login input[type="submit"]
+        { 
+            width: 150px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        body
+        {
+            /*background-color: #363636;*/
+            background-color: dimgrey;
+        }
+
+        .login a
+        {
+            color: deepskyblue;
+            text-decoration: underline;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .jumbotron
+        {
+            background: #313880;
+        }
+
+        .jumbotron a
+        {
+            color: white;
+        }
+
+        table {
+            margin: 25px auto 200px auto;
+        }
+
+        table, tbody, td, th
+        {
+            border: 2px solid white;
+            border-collapse: collapse;
+            color: white;
+        }
+
+        td, th {
+            min-width: 50px;
+            max-width: 250px;
+            padding: 5px 5px 5px 5px;
+            text-align: center;
+        }
+
+        td button {
+            float: left;
+            margin: 5px 5px 5px 5px;
+        }
