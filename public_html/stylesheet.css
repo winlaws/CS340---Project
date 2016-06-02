@@ -11,8 +11,19 @@
             color: white;
         }
 
+        .backdrop {
+            border-radius: 5px;
+            background-color: green;
+            padding: 20px 50px 20px 50px;
+            margin: 50px auto 0 auto;
+        }
+
         .login_container a {
             color: #313880;
+        }
+
+        .login_container h1 {
+            color: white;
         }
 
         .login h3 {
@@ -103,6 +114,10 @@
 
         table {
             margin: 25px auto 200px auto;
+        }
+
+        .login_container table {
+            margin: 25px auto 25px auto;
         }
 
         table, tbody, td, th

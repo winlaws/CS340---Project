@@ -252,9 +252,9 @@ else if(empty($_POST) == false)
     <div class="container">
         <div class="jumbotron">
             <?php
-            echo "<a href='" . "select.php?username=" . $username . "&password=" . $password . "'>\n";
+            echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
             ?>                
-                <h3>Restaraunt Database Project</h3>
+                <h3>Restaurant Database Project</h3>
             </a>
         </div>
 

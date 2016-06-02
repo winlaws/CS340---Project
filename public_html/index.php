@@ -55,7 +55,7 @@ include("includes/header.php");
             if($successfulLogin == true)
             {
                 echo "<script>\n";
-                echo "window.location = 'adminRestaraunt.php?username=" . $username . "&password=" . $password . "';\n";
+                echo "window.location = 'Search.php?username=" . $username . "&password=" . $password . "';\n";
                 echo "</script>\n";
             }
             else

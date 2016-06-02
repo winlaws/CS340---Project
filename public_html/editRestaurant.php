@@ -197,7 +197,7 @@ if(empty($_POST) == false)
              echo "Tag select prepare failed: "  . $stmt->errno . " " . $stmt->error;
        }
 
-       $t = $tags[$i];
+       $t = trim($tags[$i]);
        if(!($stmt->bind_param("s",$t))){
             echo "Tag select bind param failed: "  . $stmt->errno . " " . $stmt->error;
        }
@@ -338,9 +338,9 @@ else if(empty($_GET) == false)
         while($stmt->fetch())
         {
               if($count != 0)
-                 $tagstring = $tagstring . ", " . $tag;
+                 $tagstring = $tagstring . ", " . trim($tag);
               else
-                 $tagstring = $tagstring . $tag;
+                 $tagstring = $tag;
               $count++;
         }
 
@@ -363,7 +363,7 @@ else if(empty($_GET) == false)
     //We will navigate back to the proper window if this one doesn't have the required information to perform an edit
     if($invalidUrl == true || $editSuccess == true)  {
         echo "<script>\n";
-        echo "window.location = \"adminRestaraunt.php?username=" . $username . "&password=" . $password . "\";";
+        echo "window.location = \"adminRestaurant.php?username=" . $username . "&password=" . $password . "\";";
         echo "</script>\n";
 
     } else {
@@ -372,7 +372,7 @@ else if(empty($_GET) == false)
     <div class="container">
         <div class="jumbotron">
             <?php
-        echo "<a href='" . "adminRestaraunt.php?username=" . $username . "&password=" . $password . "'>\n";
+        echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
             ?>                
                 <h3>Restaraunt Database Project</h3>
             </a>
