@@ -100,8 +100,8 @@
             // Restaurant Info - get using php (sql query)
             if(!($stmt = $mysqli->prepare("SELECT restaurant.name, restaurant.website, restaurant.phone, 
                                                   location.streetAddress, location.city, location.state, location.zip 
-                                            FROM restaraunt
-                                            INNER JOIN location ON restaraunt.lid = location.id 
+                                            FROM restaurant
+                                            INNER JOIN location ON restaurant.lid = location.id 
                                             WHERE restaurant.id=(?)")))
             {
                 echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;

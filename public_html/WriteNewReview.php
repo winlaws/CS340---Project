@@ -23,7 +23,7 @@
   </head>
   <body>
     <?php
-      if(!($stmt = $mysqli->prepare("SELECT restaurant.name FROM restaraunt WHERE restaurant.id=(?)")))
+      if(!($stmt = $mysqli->prepare("SELECT restaurant.name FROM restaurant WHERE restaurant.id=(?)")))
       {
           echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
       }

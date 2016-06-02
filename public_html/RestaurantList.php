@@ -66,9 +66,9 @@
 
                     $query = "SELECT DISTINCT restaurant.id, restaurant.name, restaurant.website, restaurant.phone, 
                                          location.streetAddress, location.city, location.state, location.zip 
-                                   FROM restaraunt
+                                   FROM restaurant
                                    INNER JOIN location ON restaurant.lid = location.id 
-                                   INNER JOIN tag_restaraunt ON restaurant.id = tag_restaurant.rid
+                                   INNER JOIN tag_restaurant ON restaurant.id = tag_restaurant.rid
                                    INNER JOIN tag ON tag_restaurant.tid = tag.id
                              ";
                                    

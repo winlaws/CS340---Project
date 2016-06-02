@@ -1,8 +1,8 @@
 <?php
 $host = "oniddb.cws.oregonstate.edu";
-$dbUsername = "lewisch-db";
-$dbPass= "2HjqtP1ieKV2vkIg";
-$db = "lewisch-db";
+$dbUsername = "winlaws-db";
+$dbPass= "rlMuClW21tvqXRNz";
+$db = "winlaws-db";
 
 ini_set('display_errors', 'On');
 $mysqli = new mysqli($host,$dbUsername,$dbPass,$db);
