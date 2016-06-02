@@ -74,7 +74,8 @@ if(empty($_POST) == false)
                 echo "Location insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
             }
 
-            if(!($stmt->bind_param("sssi",$_POST['street'],$_POST['city'],$_POST['province'],intval($_POST['zipcode'])))){
+            $z = intval($_POST['zipcode']);
+            if(!($stmt->bind_param("sssi",$_POST['street'],$_POST['city'],$_POST['province'],$z))){
                 echo "Location insert bind failed: "  . $stmt->errno . " " . $stmt->error;
             }
 

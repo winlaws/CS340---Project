@@ -16,32 +16,32 @@ if(empty($_POST) == false)
       $editSuccess = true;
    }
 
-   //Update restaraunt information
-   if(!($stmt = $mysqli->prepare("UPDATE restaraunt SET name = ?, website = ?, phone = ? WHERE id = ?"))){
-        echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+   //Update restaurant information
+   if(!($stmt = $mysqli->prepare("UPDATE restaurant SET name = ?, website = ?, phone = ? WHERE id = ?"))){
+        echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
    }
 
    if(!($stmt->bind_param("sssi",$_POST['name'],$_POST['website'],$_POST['phone'],$_POST['id']))){
-        echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+        echo "restaurant select bind param failed: "  . $stmt->errno . " " . $stmt->error;
    }
 
    if(!$stmt->execute()){
-       echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+       echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
    }  
 
    unset($stmt);
 
    //Select location
-   if(!($stmt = $mysqli->prepare("SELECT lid FROM restaraunt WHERE id = ?"))){
-        echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+   if(!($stmt = $mysqli->prepare("SELECT lid FROM restaurant WHERE id = ?"))){
+        echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
    }
 
    if(!($stmt->bind_param("i",$_POST['id']))){
-        echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+        echo "restaurant select bind param failed: "  . $stmt->errno . " " . $stmt->error;
    }
 
    if(!$stmt->execute()){
-       echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+       echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
    }  
 
    if(!$stmt->bind_result($lid))
@@ -52,17 +52,17 @@ if(empty($_POST) == false)
    $stmt->fetch();
    unset($stmt);
 
-       //Check number of restaraunt bound to this address
-       if(!($stmt = $mysqli->prepare("SELECT id FROM restaraunt WHERE lid=?"))){
-           echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+       //Check number of restaurant bound to this address
+       if(!($stmt = $mysqli->prepare("SELECT id FROM restaurant WHERE lid=?"))){
+           echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
        }
 
        if(!($stmt->bind_param("i",$lid))){
-           echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+           echo "restaurant select bind param failed: "  . $stmt->errno . " " . $stmt->error;
        }
 
        if(!$stmt->execute()){
-           echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+           echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
        }  
 
        if(!$stmt->bind_result($id))
@@ -76,20 +76,20 @@ if(empty($_POST) == false)
            $count++;
        }
 
-       if($count == 1) //Only one restaraunt at this location so we can just update it
+       if($count == 1) //Only one restaurant at this location so we can just update it
        {
            //Update location
            if(!($stmt = $mysqli->prepare("UPDATE location SET streetAddress = ?, city = ?, state = ?, zip = ? WHERE id = ?"))){
-               echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+               echo "location update prepare failed: "  . $stmt->errno . " " . $stmt->error;
            }
 
            $z = $_POST['zipcode'];
            if(!($stmt->bind_param("sssii",$_POST['street'],$_POST['city'],$_POST['province'],$z,$lid))){
-               echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+               echo "location update bind param failed: "  . $stmt->errno . " " . $stmt->error;
            }
 
            if(!$stmt->execute()){
-               echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+               echo "location update execute failed: "  . $stmt->errno . " " . $stmt->error;
            }  
 
            unset($stmt);
@@ -98,15 +98,15 @@ if(empty($_POST) == false)
        {
            //Check if location has been updated
            if(!($stmt = $mysqli->prepare("SELECT streetAddress, city, state, zip FROM location WHERE id = ?"))){
-               echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+               echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
            }
 
            if(!($stmt->bind_param("i",$_POST['id']))){
-               echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+               echo "restaurant select bind param failed: "  . $stmt->errno . " " . $stmt->error;
            }
 
            if(!$stmt->execute()){
-               echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+               echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
            }  
 
            if(!$stmt->bind_result($street, $city, $state, $zip))
@@ -122,58 +122,58 @@ if(empty($_POST) == false)
            {
                //Update location
                if(!($stmt = $mysqli->prepare("INSERT INTO location (streetAddress, city, state, zip) VALUES (?,?,?,?)"))){
-                   echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                   echo "insert location prepare failed: "  . $stmt->errno . " " . $stmt->error;
                }
 
                $z = intval($_POST['zipcode']);
                if(!($stmt->bind_param("sssi",$_POST['street'],$_POST['city'],$_POST['province'],$z))){
-                   echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+                   echo "insert location bind param failed: "  . $stmt->errno . " " . $stmt->error;
                }
 
                if(!$stmt->execute()){
-                   echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+                   echo "insert location execute failed: "  . $stmt->errno . " " . $stmt->error;
                }  
 
                unset($stmt);
 
                //Get the new location
                if(!($stmt = $mysqli->prepare("SELECT id FROM location WHERE streetAddress = ? AND city = ? AND state = ? AND zip = ? LIMIT 1"))){
-                   echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                   echo "location select prepare failed: "  . $stmt->errno . " " . $stmt->error;
                }
 
                if(!($stmt->bind_param("sssi",$_POST['street'],$_POST['city'],$_POST['province'],$z))){
-                   echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+                   echo "location select bind param failed: "  . $stmt->errno . " " . $stmt->error;
                }
 
                if(!$stmt->execute()){
-                   echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+                   echo "location select execute failed: "  . $stmt->errno . " " . $stmt->error;
                }  
 
                if(!$stmt->bind_result($lid))
                {
-                   echo "Location select bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                   echo "location select bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
                }
 
                $stmt->fetch();
                unset($stmt);
 
-                   //Set the restaraunt ID to a new id
-                   if(!($stmt = $mysqli->prepare("UPDATE restaraunt SET lid = ? WHERE id = ?"))){
-                       echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                   //Set the restaurant ID to a new id
+                   if(!($stmt = $mysqli->prepare("UPDATE restaurant SET lid = ? WHERE id = ?"))){
+                       echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
                    }
 
                    if(!($stmt->bind_param("ii", $lid, $_POST['id']))){
-                       echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+                       echo "restaurant select bind param failed: "  . $stmt->errno . " " . $stmt->error;
                    }
 
                    if(!$stmt->execute()){
-                       echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+                       echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
                    }  
            }
        }
 
    //Delete existing tags
-   if(!($stmt = $mysqli->prepare("DELETE FROM tag_restaraunt WHERE rid = ?"))){
+   if(!($stmt = $mysqli->prepare("DELETE FROM tag_restaurant WHERE rid = ?"))){
         echo "Tag delete prepare failed: "  . $stmt->errno . " " . $stmt->error;
    }
 
@@ -192,7 +192,7 @@ if(empty($_POST) == false)
    for($i = 0;$i < $tagCount;$i++)
    {
        //See if tag currently exists
-       //Check that the restaraunt doesn't already exist
+       //Check that the restaurant doesn't already exist
        if(!($stmt = $mysqli->prepare("SELECT id FROM tag WHERE description = ?"))){
              echo "Tag select prepare failed: "  . $stmt->errno . " " . $stmt->error;
        }
@@ -251,17 +251,17 @@ if(empty($_POST) == false)
               unset($stmt);
         }
 
-        //Connect the tag to the restaraunt
-        if(!($stmt = $mysqli->prepare("INSERT INTO tag_restaraunt (rid,tid) VALUES (?,?)"))){
-              echo "Tag-Restaraunt insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
+        //Connect the tag to the restaurant
+        if(!($stmt = $mysqli->prepare("INSERT INTO tag_restaurant (rid,tid) VALUES (?,?)"))){
+              echo "Tag-restaurant insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!($stmt->bind_param("ii",$_POST['id'], $tid))){
-             echo "Tag-Restaraunt insert bind param failed: "  . $stmt->errno . " " . $stmt->error;
+             echo "Tag-restaurant insert bind param failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
          if(!$stmt->execute()){
-              echo "Tag-Restaraunt insert execute failed: "  . $stmt->errno . " " . $stmt->error;
+              echo "Tag-restaurant insert execute failed: "  . $stmt->errno . " " . $stmt->error;
          }   
 
          unset($stmt);
@@ -274,17 +274,17 @@ else if(empty($_GET) == false)
     $invalidUrl = !isset($_GET['id']);
     if($invalidUrl == false)
     {
-        //Connect the tag to the restaraunt
-        if(!($stmt = $mysqli->prepare("SELECT name, website, phone, lid FROM restaraunt WHERE id = ?"))){
-              echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+        //Connect the tag to the restaurant
+        if(!($stmt = $mysqli->prepare("SELECT name, website, phone, lid FROM restaurant WHERE id = ?"))){
+              echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!($stmt->bind_param("i",$_GET['id']))){
-             echo "Restaraunt select bind param failed: "  . $stmt->errno . " " . $stmt->error;
+             echo "restaurant select bind param failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!$stmt->execute()){
-            echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+            echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!$stmt->bind_result($name, $website, $phone, $lid))
@@ -294,7 +294,7 @@ else if(empty($_GET) == false)
 
         while($stmt->fetch()){}
         
-         //Connect the tag to the restaraunt
+         //Connect the tag to the restaurant
         if(!($stmt = $mysqli->prepare("SELECT streetAddress, city, state, zip FROM location WHERE id = ?"))){
               echo "Location select prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
@@ -315,7 +315,7 @@ else if(empty($_GET) == false)
         while($stmt->fetch()){}
         
         //Get associated tags
-         if(!($stmt = $mysqli->prepare("SELECT T.description FROM restaraunt R INNER JOIN tag_restaraunt TR ON R.id=TR.rid INNER JOIN tag T ON T.id=TR.tid WHERE R.id = ?"))){
+         if(!($stmt = $mysqli->prepare("SELECT T.description FROM restaurant R INNER JOIN tag_restaurant TR ON R.id=TR.rid INNER JOIN tag T ON T.id=TR.tid WHERE R.id = ?"))){
               echo "Tag select prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
@@ -352,7 +352,7 @@ else if(empty($_GET) == false)
 
 <html>
 <head>
-    <title>Database Restaraunts</title>
+    <title>Database Restaurant</title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -374,13 +374,13 @@ else if(empty($_GET) == false)
             <?php
         echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
             ?>                
-                <h3>Restaraunt Database Project</h3>
+                <h3>Restaurant Database Project</h3>
             </a>
         </div>
         <div class="login_container">
             <form class="login" action="" method="post">
                 <div class="subform">
-                    <h3> Restaraunt Information </h3>
+                    <h3> Restaurant Information </h3>
                     <label>Name</label>
                     <input type="text" name="name" value=<?php echo "\"" . $name . "\""?> />
                     <br />

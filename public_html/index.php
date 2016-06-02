@@ -38,7 +38,7 @@ include("includes/header.php");
 
 <html>
 <head>
-    <title>Database Restaraunts</title>
+    <title>Database Restaurants</title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -48,7 +48,7 @@ include("includes/header.php");
     <div class="container">
         <div class="jumbotron">
             <a href="index.php">
-                <h3>Restaraunt Database Project</h3>
+                <h3>Restaurant Database Project</h3>
             </a>
         </div> 
         <?php

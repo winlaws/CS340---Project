@@ -8,38 +8,38 @@ require_once("includes/invalidlogin.php");
 <?php
 if(empty($_GET) == false && isset($_GET['type']) == true && $_GET['type'] == 'delete' && isset($_GET['id']) == true  && is_numeric($_GET['id']) == true)
 {
-    if(!($stmt = $mysqli->prepare("DELETE FROM restaraunt WHERE id = ?"))){
+    if(!($stmt = $mysqli->prepare("DELETE FROM restaurant WHERE id = ?"))){
         echo "Restaraunt delete prepare failed: "  . $stmt->errno . " " . $stmt->error;
     }
 
     if(!($stmt->bind_param("i",$_GET['id']))){
-        echo "Restaraunt delete bind param failed: "  . $stmt->errno . " " . $stmt->error;
+        echo "restaurant delete bind param failed: "  . $stmt->errno . " " . $stmt->error;
     }
 
     if(!$stmt->execute()){
-        echo "Restaraunt delete execute failed: "  . $stmt->errno . " " . $stmt->error;
+        echo "restaurant delete execute failed: "  . $stmt->errno . " " . $stmt->error;
     }      
 
     unset($stmt);
 }
 else if(empty($_POST) == false)
 {
-    //Check that the restaraunt doesn't already exist
-    if(!($stmt = $mysqli->prepare("SELECT R.id FROM restaraunt R INNER JOIN location L ON R.lid=L.id WHERE R.name= ? AND L.streetAddress=? AND L.city=? AND L.state=? LIMIT 1"))){
-        echo "Restaraunt check prepare failed: "  . $stmt->errno . " " . $stmt->error;
+    //Check that the restaurant doesn't already exist
+    if(!($stmt = $mysqli->prepare("SELECT R.id FROM restaurant R INNER JOIN location L ON R.lid=L.id WHERE R.name= ? AND L.streetAddress=? AND L.city=? AND L.state=? LIMIT 1"))){
+        echo "restaurant check prepare failed: "  . $stmt->errno . " " . $stmt->error;
     }
 
     if(!($stmt->bind_param("ssss",$_POST['name'], $_POST['street'],$_POST['city'],$_POST['province']))){
-        echo "Restaraunt check bind param failed: "  . $stmt->errno . " " . $stmt->error;
+        echo "restaurant check bind param failed: "  . $stmt->errno . " " . $stmt->error;
     }
 
     if(!$stmt->execute()){
-        echo "Restaraunt check execute failed: "  . $stmt->errno . " " . $stmt->error;
+        echo "restaurant check execute failed: "  . $stmt->errno . " " . $stmt->error;
     }
 
     if(!$stmt->bind_result($id))
     {
-        echo "Restaraunt check bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+        echo "restaurant check bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
     }
 
     $matchFound = false;
@@ -49,7 +49,7 @@ else if(empty($_POST) == false)
             $matchFound = true;
     }
 
-    //Add the restaraunt if it doesn't already exist
+    //Add the restaurant if it doesn't already exist
     if($matchFound == false)
     {
         //Check if the location currently exists to prevent duplicates
@@ -114,35 +114,35 @@ else if(empty($_POST) == false)
             unset($stmt);
         }
 
-        //Insert restaraunt into database
-        if(!($stmt = $mysqli->prepare("INSERT INTO restaraunt (name, website, phone, lid) VALUES (?, ?, ?, ?)"))){
-            echo "Restaraunt insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
+        //Insert restaurant into database
+        if(!($stmt = $mysqli->prepare("INSERT INTO restaurant (name, website, phone, lid) VALUES (?, ?, ?, ?)"))){
+            echo "restaurant insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!($stmt->bind_param("sssi",$_POST['name'], $_POST['website'],$_POST['phone'], $lid))){
-            echo "Restaraunt insert bind param failed: "  . $stmt->errno . " " . $stmt->error;
+            echo "restaurant insert bind param failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!$stmt->execute()){
-            echo "Restaraunt Insert execute failed: "  . $stmt->errno . " " . $stmt->error;
+            echo "restaurant Insert execute failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
-        //Get the id of the restaraunt for connecting to tags
-        if(!($stmt = $mysqli->prepare("SELECT R.id FROM restaraunt R INNER JOIN location L ON R.lid=L.id WHERE R.name= ? AND L.streetAddress=? AND L.city=? AND L.state=? LIMIT 1"))){
-            echo "Restaraunt check prepare failed: "  . $stmt->errno . " " . $stmt->error;
+        //Get the id of the restaurant for connecting to tags
+        if(!($stmt = $mysqli->prepare("SELECT R.id FROM restaurant R INNER JOIN location L ON R.lid=L.id WHERE R.name= ? AND L.streetAddress=? AND L.city=? AND L.state=? LIMIT 1"))){
+            echo "restaurant check prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!($stmt->bind_param("ssss",$_POST['name'], $_POST['street'],$_POST['city'],$_POST['province']))){
-            echo "Restaraunt check bind param failed: "  . $stmt->errno . " " . $stmt->error;
+            echo "restaurant check bind param failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!$stmt->execute()){
-            echo "Restaraunt check execute failed: "  . $stmt->errno . " " . $stmt->error;
+            echo "restaurant check execute failed: "  . $stmt->errno . " " . $stmt->error;
         }
 
         if(!$stmt->bind_result($rid))
         {
-            echo "Restaraunt check bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            echo "restaurant check bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
         }
 
         $stmt->fetch();
@@ -157,7 +157,7 @@ else if(empty($_POST) == false)
             for($i = 0;$i < $tagCount;$i++)
             {
                 //See if tag currently exists
-                //Check that the restaraunt doesn't already exist
+                //Check that the restaurant doesn't already exist
                 if(!($stmt = $mysqli->prepare("SELECT id FROM tag WHERE description = ?"))){
                     echo "Tag select prepare failed: "  . $stmt->errno . " " . $stmt->error;
                 }
@@ -217,17 +217,17 @@ else if(empty($_POST) == false)
                     unset($stmt);
                 }
 
-                //Connect the tag to the restaraunt
-                if(!($stmt = $mysqli->prepare("INSERT INTO tag_restaraunt (rid,tid) VALUES (?,?)"))){
-                    echo "Tag-Restaraunt insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                //Connect the tag to the restaurant
+                if(!($stmt = $mysqli->prepare("INSERT INTO tag_restaurant (rid,tid) VALUES (?,?)"))){
+                    echo "Tag-restaurant insert prepare failed: "  . $stmt->errno . " " . $stmt->error;
                 }
 
                 if(!($stmt->bind_param("ii",$rid, $tid))){
-                    echo "Tag-Restaraunt insert bind param failed: "  . $stmt->errno . " " . $stmt->error;
+                    echo "Tag-restaurant insert bind param failed: "  . $stmt->errno . " " . $stmt->error;
                 }
 
                 if(!$stmt->execute()){
-                    echo "Tag-Restaraunt insert execute failed: "  . $stmt->errno . " " . $stmt->error;
+                    echo "Tag-restaurant insert execute failed: "  . $stmt->errno . " " . $stmt->error;
                 }   
 
                 unset($stmt);
@@ -241,7 +241,7 @@ else if(empty($_POST) == false)
 
 <html>
 <head>
-    <title>Database Restaraunts</title>
+    <title>Database Restaurants</title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -267,12 +267,12 @@ else if(empty($_POST) == false)
                     {
                     ?>
                     <div class="alert alert-warning">
-                    <strong> Warning! </strong> Restaraunt with this name already is registered at this location. Edit this value rather than add it.
+                    <strong> Warning! </strong> Restayrant with this name already is registered at this location. Edit this value rather than add it.
                     </div>
                     <?php
                     }
                     ?>
-                    <h3> Restaraunt Information </h3>
+                    <h3> Restaurant Information </h3>
                     <label>Name</label>
                     <input type="text" name="name"/>
                     <br />
@@ -311,7 +311,7 @@ else if(empty($_POST) == false)
         </div>
 
         <table>
-            <caption>Restaraunt Data</caption>
+            <caption>Restaurant Data</caption>
             <tbody>
                 <tr>
                     <th>ID</th>
@@ -328,17 +328,17 @@ else if(empty($_POST) == false)
                 <?php
                 
                 //Check if the location currently exists to prevent duplicates
-                if(!($stmt = $mysqli->prepare("SELECT L.streetAddress, L.city, L. state, L.zip, R.id, R.name, R.website, R.phone FROM location L INNER JOIN restaraunt R ON R.lid=L.id"))){
-                    echo "Restaraunt select prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                if(!($stmt = $mysqli->prepare("SELECT L.streetAddress, L.city, L. state, L.zip, R.id, R.name, R.website, R.phone FROM location L INNER JOIN restaurant R ON R.lid=L.id"))){
+                    echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
                 }
 
                 if(!$stmt->execute()){
-                    echo "Restaraunt select execute failed: "  . $stmt->errno . " " . $stmt->error;
+                    echo "restaurant select execute failed: "  . $stmt->errno . " " . $stmt->error;
                 }
 
                 if(!$stmt->bind_result($address, $city, $state, $zip, $id, $name, $website, $phone))
                 {
-                    echo "Restaraunt select bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    echo "restaurant select bind result failed: " . $mysqli->connect_errno . " " . $mysqli->connect_error;
                 }
 
                 $restaraunts = array();
@@ -366,8 +366,8 @@ else if(empty($_POST) == false)
                     if(isset($restaraunts[$i]['id']) == false)
                         continue;
 
-                    //Fetch the tags for the associated restaraunt
-                    if(!($stmt = $mysqli->prepare("SELECT T.description FROM restaraunt R INNER JOIN tag_restaraunt TR ON R.id=TR.rid INNER JOIN tag T ON T.id=TR.tid WHERE R.id = ?"))){
+                    //Fetch the tags for the associated restaurant
+                    if(!($stmt = $mysqli->prepare("SELECT T.description FROM restaurant R INNER JOIN tag_restaurant TR ON R.id=TR.rid INNER JOIN tag T ON T.id=TR.tid WHERE R.id = ?"))){
                         echo "Tag select prepare failed: "  . $stmt->errno . " " . $stmt->error;
                     }
 
