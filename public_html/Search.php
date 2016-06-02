@@ -1,49 +1,34 @@
 <?php
 	require("includes/header.php");
   	require_once("includes/header.php");
-    require("includes/invalidlogin.php");
-    require_once("includes/invalidlogin.php");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
     	<title>Search</title>
-        <!-- Bootstrap -->
-          <!-- Latest compiled and minified CSS -->
+
+    	<link rel="stylesheet" href="stylesheet.css">
+
+    	<!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        
-        <!-- Multiselect bootsrap plugin-->
-        <link rel="stylesheet" href="./bootstrap-3.3.6-dist/css/bootstrap-multiselect.css">
-        <script type="text/javascript" src="./bootstrap-3.3.6-dist/js/bootstrap-multiselect.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-        <!-- Customized CSS -->
-        <link rel="stylesheet" href="stylesheet.css" />
+  	
+	    <link rel="stylesheet" href="./bootstrap-3.3.6-dist/css/bootstrap-multiselect.css">
+		<script type="text/javascript" src="./bootstrap-3.3.6-dist/js/bootstrap-multiselect.js"></script>
   	</head>
   	<body>
-           <div class="container">
-                <div class="jumbotron">
-                <?php
-                     echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
-                ?>                
-                <h3>Restaraunt Database Project</h3>
-                </a>
-                <?php
-                echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\n";
-                echo  "Admin Tools - Edit and Delete Restaraunt Information";
-                echo "</a>\n";
-                ?>
-
-            </div>
-  		    <div class="login_container">
+  		<div class="col-lg-6 col-lg-offset-3">
 	  		<h1 class="text-center">Search For Restaurants</h1>
 	    	<!-- Resaurant Search -->
-	    	<form class="login" method="get" action="RestaurantList.php">
+	    	<form method="get" action="RestaurantList.php">
 	    		<?php
 		    		echo "<input type='hidden' name='username' value='" . $username . "'/>";
 	             	echo "<input type='hidden' name='password' value='" . $password . "'/>";
@@ -53,7 +38,8 @@
 	    			<br/>
 					<select name="city[]" class="form-control multiselect" multiple="multiple">
 						<?php
-							if(!($stmt = $mysqli->prepare("SELECT DISTINCT city FROM location"))){
+							if(!($stmt = $mysqli->prepare("SELECT DISTINCT city FROM restaurant
+														   INNER JOIN location ON restaurant.lid = location.id"))){
 								echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 							}
 							if(!$stmt->execute()){
@@ -87,16 +73,15 @@
 								echo '<option value="'. $tag . '"> ' . $tag . '</option>\n';
 							}
 							$stmt->close();
-                        ?>
+						?>
 					</select>
 				</div>
 				<div class="text-center">
-					<input type="submit" class="btn btn-primary"></input>
+					<input type="submit" class="btn btn-default"></input>
 				</div>
 			</form>
-		    </div>
+		</div>
 
-          </div>
 		<!-- Initialize the plugin: -->
 		<script type="text/javascript">
 			$(document).ready(function() {

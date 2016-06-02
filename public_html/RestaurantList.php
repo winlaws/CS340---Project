@@ -64,12 +64,12 @@
         		<!-- Populate List using php (sql query) -->
                 <?php
 
-                    $query = "SELECT DISTINCT restaraunt.id, restaraunt.name, restaraunt.website, restaraunt.phone, 
+                    $query = "SELECT DISTINCT restaurant.id, restaurant.name, restaurant.website, restaurant.phone, 
                                          location.streetAddress, location.city, location.state, location.zip 
                                    FROM restaraunt
-                                   INNER JOIN location ON restaraunt.lid = location.id 
-                                   INNER JOIN tag_restaraunt ON restaraunt.id = tag_restaraunt.rid
-                                   INNER JOIN tag ON tag_restaraunt.tid = tag.id
+                                   INNER JOIN location ON restaurant.lid = location.id 
+                                   INNER JOIN tag_restaraunt ON restaurant.id = tag_restaurant.rid
+                                   INNER JOIN tag ON tag_restaurant.tid = tag.id
                              ";
                                    
                     $queryTypes= "";

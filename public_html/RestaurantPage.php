@@ -98,11 +98,11 @@
                   <br/>';
 
             // Restaurant Info - get using php (sql query)
-            if(!($stmt = $mysqli->prepare("SELECT restaraunt.name, restaraunt.website, restaraunt.phone, 
+            if(!($stmt = $mysqli->prepare("SELECT restaurant.name, restaurant.website, restaurant.phone, 
                                                   location.streetAddress, location.city, location.state, location.zip 
                                             FROM restaraunt
                                             INNER JOIN location ON restaraunt.lid = location.id 
-                                            WHERE restaraunt.id=(?)")))
+                                            WHERE restaurant.id=(?)")))
             {
                 echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
             }
