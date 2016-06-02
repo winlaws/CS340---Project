@@ -18,6 +18,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <!-- Multiselect bootsrap plugin-->
+        <link rel="stylesheet" href="../../bootstrap-3.3.6-dist/css/bootstrap-multiselect.css">
+        <script type="text/javascript" src="../../bootstrap-3.3.6-dist/js/bootstrap-multiselect.js"></script>
+
         <!-- Customized CSS -->
         <link rel="stylesheet" href="stylesheet.css" />
   	</head>
