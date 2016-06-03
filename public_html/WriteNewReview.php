@@ -22,77 +22,75 @@
       <link rel="stylesheet" href="stylesheet.css" />
   </head>
   <body>
-      <div class="container">
-    	<div class="jumbotron">
-                <?php
-                echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
-                ?>                
-                    <h3>Restaraunt Database Project</h3>
-                    </a>
-                     <?php
-                     echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\n";
-                     echo  "Admin Tools - Edit and Delete Restaraunt Information";
-                     echo "</a>\n";
-                     ?>
-        </div>
-        <div class="backdrop">
-    <?php
-      if(!($stmt = $mysqli->prepare("SELECT restaurant.name FROM restaurant WHERE restaurant.id=(?)")))
-      {
-          echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
-      }
-      if(!($stmt->bind_param("i",$_GET['rid']))){
-          echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
-      }
-      if(!$stmt->execute()){
-          echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
-      } 
-      if(!$stmt->bind_result($name)){
-          echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-      }
-      if(!$stmt->fetch()){
-          echo 'Error: Restaurant ID Not Found - Cannot Write Review';
-      }
-      else {
-        echo '<div class="col-lg-8 col-lg-offset-2">
-                <h1 class="text-center"> Write New Review For ' . $name . '</h1>
-                <br/>
-                <form method="post" action="RestaurantPage.php?username=' . $username . '&password=' . $password . '&rid=' . $_GET['rid'] . '" class="col-lg-6 col-lg-offset-3">
-                    <input type="hidden" name="username" value="' . $username . '"/>
-                    <input type="hidden" name="password" value="' . $password . '"/>
-
-                    <input type="hidden" name="rid" value="' . $_GET['rid'] . '"></input>     
-                    <input type="hidden" name="uid" value="' . $id . '"></input>
-                    
-
-
-                    <div class="form-group">
-                      <label class="white-text" for="rating">Rating</label>               
-                      <br/>
-                      <div class="text-center">
-                        <input type="radio" name="rating" class="radio-inline" value=1><span class="white-text">1</span></input>
-                        <input type="radio" name="rating" class="radio-inline" value=2><span class="white-text">2</span></input>
-                        <input type="radio" name="rating" class="radio-inline" value=3 checked><span class="white-text">3</span></input>
-                        <input type="radio" name="rating" class="radio-inline" value=4><span class="white-text">4</span></input>
-                        <input type="radio" name="rating" class="radio-inline" value=5><span class="white-text">5</span></input>
-                      </div>
-                    </div>
-              
-                    <div class="form-group">
-                      <label class="white-text" for="txt">Review Text</label>
-                      <textarea name="txt" placeholder="Write Review Here..." class="form-control"></textarea>
-                    </div>
-
+    <div class="container">
+      <div class="jumbotron">
+        <?php
+          echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n<h3>Restaraunt Database Project</h3></a>";
+          echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\nAdmin Tools - Edit and Delete Restaraunt Information</a>\n";
+        ?>
+      </div>
+      
+      <div class="backdrop">
+        <?php
+          //get restaurant name
+          if(!($stmt = $mysqli->prepare("SELECT restaurant.name FROM restaurant WHERE restaurant.id=(?)")))
+          {
+              echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+          }
+          if(!($stmt->bind_param("i",$_GET['rid']))){
+              echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+          }
+          if(!$stmt->execute()){
+              echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
+          } 
+          if(!$stmt->bind_result($name)){
+              echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+          }
+          if(!$stmt->fetch()){
+              echo 'Error: Restaurant ID Not Found - Cannot Write Review';
+          }
+          
+          //Display Restaurant Review Form
+          else {
+            echo '<div class="col-lg-8 col-lg-offset-2">
+                    <h1 class="text-center"> Write New Review For ' . $name . '</h1>
                     <br/>
-                    <div class="text-center">
-                      <input type="submit" class="btn btn-primary"></input>
-                    </div>
-                </form>
-              </div>';
-      }
-      $stmt->close();
-    ?> 
-    </div>
+                    <form method="post" action="RestaurantPage.php?username=' . $username . '&password=' . $password . '&rid=' . $_GET['rid'] . '" class="col-lg-6 col-lg-offset-3">
+                        <input type="hidden" name="username" value="' . $username . '"/>
+                        <input type="hidden" name="password" value="' . $password . '"/>
+
+                        <input type="hidden" name="rid" value="' . $_GET['rid'] . '"></input>     
+                        <input type="hidden" name="uid" value="' . $id . '"></input>
+                        
+
+
+                        <div class="form-group">
+                          <label class="white-text" for="rating">Rating</label>               
+                          <br/>
+                          <div class="text-center">
+                            <input type="radio" name="rating" class="radio-inline" value=1><span class="white-text">1</span></input>
+                            <input type="radio" name="rating" class="radio-inline" value=2><span class="white-text">2</span></input>
+                            <input type="radio" name="rating" class="radio-inline" value=3 checked><span class="white-text">3</span></input>
+                            <input type="radio" name="rating" class="radio-inline" value=4><span class="white-text">4</span></input>
+                            <input type="radio" name="rating" class="radio-inline" value=5><span class="white-text">5</span></input>
+                          </div>
+                        </div>
+                  
+                        <div class="form-group">
+                          <label class="white-text" for="txt">Review Text</label>
+                          <textarea name="txt" placeholder="Write Review Here..." class="form-control"></textarea>
+                        </div>
+
+                        <br/>
+                        <div class="text-center">
+                          <input type="submit" class="btn btn-primary"></input>
+                        </div>
+                    </form>
+                  </div>';
+          }
+          $stmt->close();
+        ?> 
+      </div>
     </div>
   </body>
 </html>

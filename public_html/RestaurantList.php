@@ -1,8 +1,6 @@
 <?php
     require("includes/header.php");
     require_once("includes/header.php");
-    require("includes/invalidlogin.php");
-    require_once("includes/invalidlogin.php");
 ?>
 
 <!DOCTYPE html>
@@ -23,165 +21,161 @@
         <link rel="stylesheet" href="stylesheet.css" />
   	</head>
   	<body>
-          <div class="container">
-               <div class="jumbotron">
+        <div class="container">
+            <div class="jumbotron">
                 <?php
-                    echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
-                ?>                
-                    <h3>Restaraunt Database Project</h3>
-                    </a>
-                     <?php
-                          echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\n";
-                          echo  "Admin Tools - Edit and Delete Restaraunt Information";
-                          echo "</a>\n";
-                     ?>
-                </div>
-        <div class="backdrop">
-    	<?php
-            echo '<br/>
-                  <div class="text-right col-lg-8 col-lg-offset-2">
-                    <a href=Search.php?username=' . $username . '&password=' . $password . '>Back to Search</a>
-                  </div>
-                  <br/>';
-        ?>
-        <br/>
-        <br/>
-        <!-- Restaurant List -->
-            <h1>Restaurants</h1>
-            <table>
-        		<thead class="thead-inverse">
-                    <tr>
-            			<th>Restaurant Name</th>
-            			<th>Website</th>
-            			<th>Phone Number</th>
-            			<th>Address</th>
-            			<th>City</th>
-            			<th>State</th>
-                        <th>Zip</th>
-            		</tr>
-                </thead>
-                <tbody>
-        		<!-- Populate List using php (sql query) -->
-                <?php
-
-                    $query = "SELECT DISTINCT restaurant.id, restaurant.name, restaurant.website, restaurant.phone, 
-                                         location.streetAddress, location.city, location.state, location.zip 
-                                   FROM restaurant
-                                   INNER JOIN location ON restaurant.lid = location.id 
-                                   INNER JOIN tag_restaurant ON restaurant.id = tag_restaurant.rid
-                                   INNER JOIN tag ON tag_restaurant.tid = tag.id
-                             ";
-                                   
-                    $queryTypes= "";
-                    $queryParams = array();
-
-                    $where = false;
-                    
-                    if(array_key_exists('city', $_GET))
-                    {
-                        $query .= ' WHERE ';
-                        $where = true;
-
-                        $first = true;
-                        $cities = $_GET['city'];
-
-                        foreach($cities as $c)
-                        {
-                            if($first==true)
-                            {
-                                $query .= 'location.city=(?) ';
-                                $first = false;
-                            }
-                            else
-                            {
-                                $query .= 'OR location.city=(?) ';
-                            }
-                            $queryTypes .= "s";
-                            $queryParams[] = $c;
-                        } 
-                    }
-
-                    if(array_key_exists('tag', $_GET))
-                    {
-                        $first = true;
-
-                        if(!$where)
-                        {
-                            $query .= ' WHERE (';
-                        }
-                        else
-                        {
-                            $query .= ' AND (';
-                        }
-                        
-                        $tags = $_GET['tag'];
-
-                        foreach($tags as $t)
-                        {
-                            if($first == true)
-                            {
-                                $query .= 'tag.description=(?) ';
-                                $first = false;
-                            }
-                            else
-                            {
-                                $query .= 'OR tag.description=(?) ';
-                            }
-        
-                            $queryTypes .= "s";
-                            $queryParams[] = $t;
-                        } 
-                        $query .= ')';
-                    }
-
-                    // //show query info
-                    // echo $query . '<br/>'; 
-                    // echo $queryTypes . '<br/>';
-                    // var_dump($queryParams);
-
-                    if(!($stmt = $mysqli->prepare($query)))
-                    {
-                        echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
-                    }
-
-                    if(count($queryParams) > 0)
-                    {
-                        $bindArr = array();
-                        $bindArr[] = $queryTypes;
-                        foreach ($queryParams as $key => $value) 
-                        {
-                            $bindArr[] = &$queryParams[$key];
-                        }
-                        if(!call_user_func_array(array($stmt, 'bind_param'), $bindArr))
-                        {   
-                            echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
-                        }
-                    }
-
-                    if(!$stmt->execute()){
-                        echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
-                    } 
-                    if(!$stmt->bind_result($rid, $name, $website, $phone, $streetAddress, $city, $state, $zip)){
-                        echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-                    }
-                    while($stmt->fetch()){
-                        echo '<tr>
-                                <th scope="row"><a href=./RestaurantPage.php?' . $_SERVER['QUERY_STRING'] . '&rid=' . $rid . '>' . $name .  '</a></th>   
-                                <td><a href="' . $website . '"> ' . $website . '</a></td>
-                                <td>' . $phone . '</td>
-                                <td>' . $streetAddress . '</td>
-                                <td>' . $city . '</td>
-                                <td>' . $state . '</td>
-                                <td>' . $zip . '</td>
-                            </tr>';
-
-                            // '<th scope="row"><a href="./RestaurantPage.php?username=' . $username . '&password=' . $password . '&rid=' . $rid . '">' . $name. '</a></th>
-                    }
-                    $stmt->close();
+                    echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n<h3>Restaraunt Database Project</h3></a>";
+                    echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\nAdmin Tools - Edit and Delete Restaraunt Information</a>\n";
                 ?>
-                </tbody>
-        	</table>
-         </div>
+            </div>
+            <div class="backdrop">
+            	<!-- Display Back to Search Link -->
+                <?php
+                    echo '<br/>
+                          <div class="text-right col-lg-8 col-lg-offset-2">
+                            <a href=Search.php?username=' . $username . '&password=' . $password . '>Back to Search</a>
+                          </div>
+                          <br/>';
+                ?>
+                <br/>
+                <br/>
+                
+                <!-- Restaurant List -->
+                <h1>Restaurants</h1>
+                <table>
+            		<thead class="thead-inverse">
+                        <tr>
+                			<th>Restaurant Name</th>
+                			<th>Website</th>
+                			<th>Phone Number</th>
+                			<th>Address</th>
+                			<th>City</th>
+                			<th>State</th>
+                            <th>Zip</th>
+                		</tr>
+                    </thead>
+                    <tbody>
+                		<!-- get Restaurant List Info using php (sql query) -->
+                        <?php
+
+                            $query = "SELECT DISTINCT restaurant.id, restaurant.name, restaurant.website, restaurant.phone, 
+                                                 location.streetAddress, location.city, location.state, location.zip 
+                                           FROM restaurant
+                                           INNER JOIN location ON restaurant.lid = location.id 
+                                           INNER JOIN tag_restaurant ON restaurant.id = tag_restaurant.rid
+                                           INNER JOIN tag ON tag_restaurant.tid = tag.id
+                                     ";
+                                           
+                            $queryTypes= "";
+                            $queryParams = array();
+
+                            $where = false;
+
+                            if(array_key_exists('city', $_GET))
+                            {
+                                $query .= ' WHERE ';
+                                $where = true;
+
+                                $first = true;
+                                $cities = $_GET['city'];
+
+                                foreach($cities as $c)
+                                {
+                                    if($first==true)
+                                    {
+                                        $query .= 'location.city=(?) ';
+                                        $first = false;
+                                    }
+                                    else
+                                    {
+                                        $query .= 'OR location.city=(?) ';
+                                    }
+                                    $queryTypes .= "s";
+                                    $queryParams[] = $c;
+                                } 
+                            }
+
+                            if(array_key_exists('tag', $_GET))
+                            {
+                                $first = true;
+
+                                if(!$where)
+                                {
+                                    $query .= ' WHERE (';
+                                }
+                                else
+                                {
+                                    $query .= ' AND (';
+                                }
+                                
+                                $tags = $_GET['tag'];
+
+                                foreach($tags as $t)
+                                {
+                                    if($first == true)
+                                    {
+                                        $query .= 'tag.description=(?) ';
+                                        $first = false;
+                                    }
+                                    else
+                                    {
+                                        $query .= 'OR tag.description=(?) ';
+                                    }
+                
+                                    $queryTypes .= "s";
+                                    $queryParams[] = $t;
+                                } 
+                                $query .= ')';
+                            }
+
+                            // //show query info
+                            // echo $query . '<br/>'; 
+                            // echo $queryTypes . '<br/>';
+                            // var_dump($queryParams);
+
+                            if(!($stmt = $mysqli->prepare($query)))
+                            {
+                                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                            }
+
+                            if(count($queryParams) > 0)
+                            {
+                                $bindArr = array();
+                                $bindArr[] = $queryTypes;
+                                foreach ($queryParams as $key => $value) 
+                                {
+                                    $bindArr[] = &$queryParams[$key];
+                                }
+                                if(!call_user_func_array(array($stmt, 'bind_param'), $bindArr))
+                                {   
+                                    echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+                                }
+                            }
+
+                            if(!$stmt->execute()){
+                                echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
+                            } 
+                            if(!$stmt->bind_result($rid, $name, $website, $phone, $streetAddress, $city, $state, $zip)){
+                                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                            }
+                            
+                            //display restaurant info in table
+                            while($stmt->fetch()){
+                                echo '<tr>
+                                        <th scope="row"><a href=./RestaurantPage.php?' . $_SERVER['QUERY_STRING'] . '&rid=' . $rid . '>' . $name .  '</a></th>   
+                                        <td><a href="' . $website . '"> ' . $website . '</a></td>
+                                        <td>' . $phone . '</td>
+                                        <td>' . $streetAddress . '</td>
+                                        <td>' . $city . '</td>
+                                        <td>' . $state . '</td>
+                                        <td>' . $zip . '</td>
+                                    </tr>';
+                            }
+                            $stmt->close();
+                        ?>
+                    </tbody>
+            	</table>
+             </div>
         </div>
   	</body>
 </html>
