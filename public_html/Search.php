@@ -8,8 +8,6 @@
 	<head>
     	<title>Search</title>
 
-    	<link rel="stylesheet" href="stylesheet.css">
-
     	<!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -23,9 +21,24 @@
   	
 	    <link rel="stylesheet" href="./bootstrap-3.3.6-dist/css/bootstrap-multiselect.css">
 		<script type="text/javascript" src="./bootstrap-3.3.6-dist/js/bootstrap-multiselect.js"></script>
-  	</head>
+        <link rel="stylesheet" href="stylesheet.css" />
+    </head>
   	<body>
-  		<div class="col-lg-6 col-lg-offset-3">
+  		<div class="container">
+            <div class="jumbotron">
+                <?php
+                echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
+                ?>                
+                    <h3>Restaraunt Database Project</h3>
+                    </a>
+                     <?php
+                     echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\n";
+                     echo  "Admin Tools - Edit and Delete Restaraunt Information";
+                     echo "</a>\n";
+                     ?>
+            </div>
+
+            <div class="backdrop">
 	  		<h1 class="text-center">Search For Restaurants</h1>
 	    	<!-- Resaurant Search -->
 	    	<form method="get" action="RestaurantList.php">
@@ -34,7 +47,7 @@
 	             	echo "<input type='hidden' name='password' value='" . $password . "'/>";
 	            ?>
 	    		<div class="form-group">
-	    			<label for="city[]">By City</label>
+	    			<label class="white-text" for="city[]">By City</label>
 	    			<br/>
 					<select name="city[]" class="form-control multiselect" multiple="multiple">
 						<?php
@@ -56,7 +69,7 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="tag[]">By Tag</label>
+					<label class="white-text" for="tag[]">By Tag</label>
 					<br/>
 					<select id="test" name="tag[]" class="form-control multiselect" multiple="multiple">
 						<?php
@@ -73,15 +86,15 @@
 								echo '<option value="'. $tag . '"> ' . $tag . '</option>\n';
 							}
 							$stmt->close();
-						?>
+                        ?>
 					</select>
 				</div>
 				<div class="text-center">
-					<input type="submit" class="btn btn-default"></input>
+					<input type="submit" class="btn btn-primary" />
 				</div>
 			</form>
-		</div>
-
+		</div>      
+        </div>
 		<!-- Initialize the plugin: -->
 		<script type="text/javascript">
 			$(document).ready(function() {

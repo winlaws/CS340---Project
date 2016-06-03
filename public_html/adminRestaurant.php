@@ -231,6 +231,7 @@ else if(empty($_POST) == false)
                 }   
 
                 unset($stmt);
+                unset($tid);
             }
         }
     }

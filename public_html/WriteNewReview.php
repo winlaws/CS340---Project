@@ -22,6 +22,20 @@
       <link rel="stylesheet" href="stylesheet.css" />
   </head>
   <body>
+      <div class="container">
+    	<div class="jumbotron">
+                <?php
+                echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
+                ?>                
+                    <h3>Restaraunt Database Project</h3>
+                    </a>
+                     <?php
+                     echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\n";
+                     echo  "Admin Tools - Edit and Delete Restaraunt Information";
+                     echo "</a>\n";
+                     ?>
+        </div>
+        <div class="backdrop">
     <?php
       if(!($stmt = $mysqli->prepare("SELECT restaurant.name FROM restaurant WHERE restaurant.id=(?)")))
       {
@@ -53,30 +67,32 @@
 
 
                     <div class="form-group">
-                      <label for="rating">Rating</label>               
+                      <label class="white-text" for="rating">Rating</label>               
                       <br/>
                       <div class="text-center">
-                        <input type="radio" name="rating" class="radio-inline" value=1>1</input>
-                        <input type="radio" name="rating" class="radio-inline" value=2>2</input>
-                        <input type="radio" name="rating" class="radio-inline" value=3 checked>3</input>
-                        <input type="radio" name="rating" class="radio-inline" value=4>4</input>
-                        <input type="radio" name="rating" class="radio-inline" value=5>5</input>
+                        <input type="radio" name="rating" class="radio-inline" value=1><span class="white-text">1</span></input>
+                        <input type="radio" name="rating" class="radio-inline" value=2><span class="white-text">2</span></input>
+                        <input type="radio" name="rating" class="radio-inline" value=3 checked><span class="white-text">3</span></input>
+                        <input type="radio" name="rating" class="radio-inline" value=4><span class="white-text">4</span></input>
+                        <input type="radio" name="rating" class="radio-inline" value=5><span class="white-text">5</span></input>
                       </div>
                     </div>
               
                     <div class="form-group">
-                      <label for="txt">Review Text</label>
+                      <label class="white-text" for="txt">Review Text</label>
                       <textarea name="txt" placeholder="Write Review Here..." class="form-control"></textarea>
                     </div>
 
                     <br/>
                     <div class="text-center">
-                      <input type="submit" class="btn btn-default"></input>
+                      <input type="submit" class="btn btn-primary"></input>
                     </div>
                 </form>
               </div>';
       }
       $stmt->close();
     ?> 
+    </div>
+    </div>
   </body>
 </html>

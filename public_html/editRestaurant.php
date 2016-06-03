@@ -265,7 +265,7 @@ if(empty($_POST) == false)
          }   
 
          unset($stmt);
-         
+         unset($tid);
    }
     $editSuccess = true;
 }
@@ -274,7 +274,7 @@ else if(empty($_GET) == false)
     $invalidUrl = !isset($_GET['id']);
     if($invalidUrl == false)
     {
-        //Connect the tag to the restaurant
+        //Get the restarurant id
         if(!($stmt = $mysqli->prepare("SELECT name, website, phone, lid FROM restaurant WHERE id = ?"))){
               echo "restaurant select prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }
@@ -294,7 +294,7 @@ else if(empty($_GET) == false)
 
         while($stmt->fetch()){}
         
-         //Connect the tag to the restaurant
+         //Get the location information
         if(!($stmt = $mysqli->prepare("SELECT streetAddress, city, state, zip FROM location WHERE id = ?"))){
               echo "Location select prepare failed: "  . $stmt->errno . " " . $stmt->error;
         }

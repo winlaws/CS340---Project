@@ -47,8 +47,8 @@
         <br/>
         <br/>
         <!-- Restaurant List -->
-    	<div>
-            <table class="table">
+            <h1>Restaurants</h1>
+            <table>
         		<thead class="thead-inverse">
                     <tr>
             			<th>Restaurant Name</th>
@@ -183,6 +183,5 @@
         	</table>
          </div>
         </div>
-       </div>
   	</body>
 </html>

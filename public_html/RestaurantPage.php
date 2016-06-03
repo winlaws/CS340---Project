@@ -21,7 +21,21 @@
         <link rel="stylesheet" href="stylesheet.css" />
   	</head> 
   	<body>
-    	
+          <div class="container">
+    	<div class="jumbotron">
+                <?php
+                echo "<a href='" . "Search.php?username=" . $username . "&password=" . $password . "'>\n";
+                ?>                
+                    <h3>Restaraunt Database Project</h3>
+                    </a>
+                     <?php
+                     echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\n";
+                     echo  "Admin Tools - Edit and Delete Restaraunt Information";
+                     echo "</a>\n";
+                     ?>
+        </div>
+        <div>
+            <div class="backdrop">
         <?php
             // New Review Added 
             if(!empty($_POST))
@@ -119,7 +133,7 @@
             echo '<div class="col-lg-8 col-lg-offset-2">';
             
             while($stmt->fetch()){
-                echo '<div class="text-center">
+                echo '<div class="white-text text-center">
                         <h1>' . $name . '</h1>
                         Website: <a href="' . $website . '">' . $website . '</a> <br/>
                         Phone: ' . $phone . '<br/>'
@@ -129,9 +143,13 @@
             }
             $stmt->close();
         ?>
-        	
+        </div>
+        </div>
         <!-- Review Section -->
 		<br/>
+        <div>
+        <div class="backdrop">
+
         <?php
             echo '<!-- Add New Review -->
                 <h3>Reviews</h3> 
@@ -172,6 +190,8 @@
 
             echo '</div>';
         ?>
+        </div>
+        </div>
         </div>
   	</body>
 </html>
