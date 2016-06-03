@@ -28,18 +28,15 @@
                     echo "<a href=\"adminRestaurant.php?username=" . $username . "&password=" . $password . "\">\nAdmin Tools - Edit and Delete Restaraunt Information</a>\n";
                 ?>
             </div>
+            <!-- Display Back to Search Link -->
+            <?php
+                echo '<br/>
+                      <div class="text-right">
+                        <a href=Search.php?username=' . $username . '&password=' . $password . '>Back to Search</a>
+                      </div>
+                      <br/>';
+            ?>
             <div class="backdrop">
-            	<!-- Display Back to Search Link -->
-                <?php
-                    echo '<br/>
-                          <div class="text-right col-lg-8 col-lg-offset-2">
-                            <a href=Search.php?username=' . $username . '&password=' . $password . '>Back to Search</a>
-                          </div>
-                          <br/>';
-                ?>
-                <br/>
-                <br/>
-                
                 <!-- Restaurant List -->
                 <h1>Restaurants</h1>
                 <table>

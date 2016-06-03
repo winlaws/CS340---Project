@@ -29,8 +29,95 @@
             
             <!-- Restaurant Info Section -->
             <div>
+                <?php 
+                    // get Back to List Link - gets previous search query from $_GET
+                    $link = "./RestaurantList.php?";
+                    $first = true;
+                    foreach($_GET as $key => $value)
+                    {
+                        if($key != 'rid')
+                        {
+                            if($first == true)
+                            {
+                                if($key == 'city' || $key == 'tag')
+                                {
+                                    foreach($value as $key_sub => $value_sub)
+                                    {
+                                        $link .= $key . "%5B%5D=" . $value_sub;
+                                    }
+                                }
+                                else 
+                                {
+                                    $link .= $key . "=" . $value;
+                                }
+                                $first = false;
+                            }
+                            else
+                            {
+                                if($key == 'city' || $key == 'tag')
+                                {
+                                    foreach($value as $key_sub => $value_sub)
+                                    {
+                                        $link .= "&" . $key . "%5B%5D=" . $value_sub;
+                                    }
+                                }
+                                else 
+                                {
+                                    $link .= "&" . $key . "=" . $value;
+                                }
+                            }
+                        } 
+                    }
+                    //echo $link;
+                    
+                    //display Back to Restaurant List link - takes you to previous search
+                    echo '<br/>
+                        <div class="text-right">
+                        <a href="' . $link . '">Back to Restaurant List</a>
+                        </div>
+                        <br/>
+                        <div class="backdrop">';
+                            // get Restaurant Info
+                            if(!($stmt = $mysqli->prepare("SELECT restaurant.name, restaurant.website, restaurant.phone, 
+                                                                  location.streetAddress, location.city, location.state, location.zip 
+                                                            FROM restaurant
+                                                            INNER JOIN location ON restaurant.lid = location.id 
+                                                            WHERE restaurant.id=(?)")))
+                            {
+                                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                            }
+                            if(!($stmt->bind_param("i",$_GET['rid']))){
+                                echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+                            }
+                            if(!$stmt->execute()){
+                                echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
+                            } 
+                            if(!$stmt->bind_result($name, $website, $phone, $streetAddress, $city, $state, $zip)){
+                                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                            }
+
+                            // display Restaurant Info
+                            while($stmt->fetch()){
+                                echo '<div class="white-text text-center">
+                                        <h1>' . $name . '</h1>
+                                        Website: <a href="' . $website . '">' . $website . '</a> <br/>
+                                        Phone: ' . $phone . '<br/>'
+                                        . $streetAddress . '<br/>'
+                                        . $city . ', ' . $state . ' ' . $zip .
+                                    '</div>';
+                            }
+                    echo '</div>';
+                    $stmt->close();
+                ?>
+            </div>
+            
+            <!-- Review Section -->
+    		<br/>
+            <div>
                 <div class="backdrop">
                     <?php
+                        echo '<h3>Reviews</h3>';  
+
                         // Add new Review  
                         if(!empty($_POST))
                         {
@@ -61,96 +148,8 @@
                             }                
                         }
                         
-                        // get Back to List Link - gets previous search query from $_GET
-                        $link = "./RestaurantList.php?";
-                        $first = true;
-                        foreach($_GET as $key => $value)
-                        {
-                            if($key != 'rid')
-                            {
-                                if($first == true)
-                                {
-                                    if($key == 'city' || $key == 'tag')
-                                    {
-                                        foreach($value as $key_sub => $value_sub)
-                                        {
-                                            $link .= $key . "%5B%5D=" . $value_sub;
-                                        }
-                                    }
-                                    else 
-                                    {
-                                        $link .= $key . "=" . $value;
-                                    }
-                                    $first = false;
-                                }
-                                else
-                                {
-                                    if($key == 'city' || $key == 'tag')
-                                    {
-                                        foreach($value as $key_sub => $value_sub)
-                                        {
-                                            $link .= "&" . $key . "%5B%5D=" . $value_sub;
-                                        }
-                                    }
-                                    else 
-                                    {
-                                        $link .= "&" . $key . "=" . $value;
-                                    }
-                                }
-                            } 
-                        }
-                        //echo $link;
-                        
-                        //display Back to Restaurant List link - takes you to previous search
-                        echo '<br/>
-                              <div class="text-right col-lg-8 col-lg-offset-2">
-                                <a href="' . $link . '">Back to Restaurant List</a>
-                              </div>
-                              <br/>';
-
-                        // get Restaurant Info
-                        if(!($stmt = $mysqli->prepare("SELECT restaurant.name, restaurant.website, restaurant.phone, 
-                                                              location.streetAddress, location.city, location.state, location.zip 
-                                                        FROM restaurant
-                                                        INNER JOIN location ON restaurant.lid = location.id 
-                                                        WHERE restaurant.id=(?)")))
-                        {
-                            echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
-                        }
-                        if(!($stmt->bind_param("i",$_GET['rid']))){
-                            echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
-                        }
-                        if(!$stmt->execute()){
-                            echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
-                        } 
-                        if(!$stmt->bind_result($name, $website, $phone, $streetAddress, $city, $state, $zip)){
-                            echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-                        }
-
-                        // display Restaurant Info
-                        echo '<div class="col-lg-8 col-lg-offset-2">';
-                        while($stmt->fetch()){
-                            echo '<div class="white-text text-center">
-                                    <h1>' . $name . '</h1>
-                                    Website: <a href="' . $website . '">' . $website . '</a> <br/>
-                                    Phone: ' . $phone . '<br/>'
-                                    . $streetAddress . '<br/>'
-                                    . $city . ', ' . $state . ' ' . $zip .
-                                '</div>';
-                        }
-                        $stmt->close();
-                    ?>
-                </div>
-            </div>
-            
-            <!-- Review Section -->
-    		<br/>
-            <div>
-                <div class="backdrop">
-                    <?php
-                        echo '<!-- Add New Review -->
-                            <h3>Reviews</h3> 
-                            <div>
+                        //Display Write New Review Link
+                        echo '<div>
                                 <a href="./WriteNewReview.php?username=' . $username . '&password=' . $password . '&rid=' . $_GET['rid'] . '">Write New Review</a> <br/>
                             </div>';
 
